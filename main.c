@@ -5,6 +5,7 @@
 #include "virtual_memory.h"
 
 int get_subs_alg_type(char * arg){
+
     if(strcmp(arg, "lru")==0){
         return SUBS_ALG_LRU;
     }
@@ -25,9 +26,9 @@ int get_subs_alg_type(char * arg){
 int main(int argc, char **argv){
 
     printf("Executando o simulador...\n");
-    printf("Arquivo de entrada: %s\n", argv[1]);
+    printf("Arquivo de entrada: %s\n", argv[2]);
 
-    vm_init(get_subs_alg_type(argv[2]), atoi(argv[4]), atoi(argv[3]));
+    vm_init(get_subs_alg_type(argv[1]), atoi(argv[4]), atoi(argv[3]));
 
     FILE * sim_file;
     char file_name[50] = "./simulations/";
