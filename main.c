@@ -4,6 +4,8 @@
 
 #include "virtual_memory.h"
 
+#define SUBSET 200
+
 int get_subs_alg_type(char * arg){
 
     if(strcmp(arg, "lru")==0){
@@ -35,16 +37,26 @@ int main(int argc, char **argv){
     strcat(file_name, argv[2]);
     sim_file = fopen(file_name, "r");
 
+    #ifdef SUBSET
+    int subset = 1;
+    #else
+    int subset = 0;
+    #endif
+    int count = 0;
+
     unsigned addr;
     char rw;
-    while (fscanf(sim_file,"%x %c",&addr,&rw) == 2) {
+    while (fscanf(sim_file,"%x %c",&addr,&rw) == 2 && (!subset || (subset && (count<SUBSET)))) {
         if(rw == 'W'){
             vm_write(addr);
         }
         if(rw == 'R'){
             vm_read(addr);
         }
+        count++;
     }
+
+    fclose(sim_file);
 
     vm_print_report();
 

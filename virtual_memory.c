@@ -81,7 +81,7 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size){
     mem_info.page_table_size = (1 << (32 - mem_info.offset_bits+2))-1;
 
     mem_info.phy_mem_size = total_memory_size*1024;
-    mem_info.phy_mem_num_of_pages = total_memory_size / page_size;
+    mem_info.phy_mem_num_of_pages = mem_info.phy_mem_size / mem_info.page_size;
     mem_info.phy_mem_filled_pages = 0;
 
     #ifdef PRINT_DEBUG
@@ -104,7 +104,7 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size){
 void vm_write(int addr){
 
     #ifdef PRINT_DEBUG
-    printf("Req to write to %d\n", addr);
+    printf("Req to write on page %d\n", PAGE_INDEX(addr));
     #endif
 
     int page_index = PAGE_INDEX(addr);
@@ -129,7 +129,7 @@ void vm_write(int addr){
 void vm_read(int addr){
 
     #ifdef PRINT_DEBUG
-    printf("Req to read from %d\n", addr);
+    printf("Req to read from page %d\n", PAGE_INDEX(addr));
     #endif
 
     int page_index = PAGE_INDEX(addr);
@@ -204,19 +204,28 @@ static void page_fault(int page_index){
 }
 
 static int lru_subs_alg(){
-    return rand()%mem_info.phy_mem_num_of_pages;
+    return 0;
 }
 
 static int second_chance_subs_alg(){
-    return rand()%mem_info.phy_mem_num_of_pages;
+    return 0;
 }
 
 static int fifo_subs_alg(){
-    return rand()%mem_info.phy_mem_num_of_pages;
+    return 0;
 }
 
 static int random_subs_alg(){
-    return rand()%mem_info.phy_mem_num_of_pages;
+    int phy_index = rand()%mem_info.phy_mem_num_of_pages;
+
+    int table_index;
+    for(int i=0; i<mem_info.page_table_size; i++){
+        if(page_table[i].validity==1 &&  page_table[i].phy_page == phy_index){
+            table_index = i;
+            break;
+        }
+    }
+    return table_index;
 }
 
 
