@@ -27,10 +27,22 @@ int get_subs_alg_type(char * arg){
 
 int main(int argc, char **argv){
 
+    if (argc < 5 || argc > 6) {
+        printf("Uso: %s <algoritmo> <arquivo de entrada> <tamanho da memória> <tamanho da página> [debug]\n", argv[0]);
+        printf("Algoritmos disponíveis: lru, 2a, fifo, random\n");
+        exit(1);
+    }
+
     printf("Executando o simulador...\n");
     printf("Arquivo de entrada: %s\n", argv[2]);
 
-    vm_init(get_subs_alg_type(argv[1]), atoi(argv[4]), atoi(argv[3]));
+    bool debug = false;
+    if (argc == 6 && strcmp(argv[5], "debug")==0) {
+        printf("Modo debug ativado.\n");
+        debug = true;
+    }
+
+    vm_init(get_subs_alg_type(argv[1]), atoi(argv[4]), atoi(argv[3]), debug);
 
     FILE * sim_file;
     char file_name[50] = "./simulations/";
@@ -46,7 +58,11 @@ int main(int argc, char **argv){
 
     unsigned addr;
     char rw;
-    while (fscanf(sim_file,"%x %c",&addr,&rw) == 2 && (!subset || (subset && (count<SUBSET)))) {
+    while (fscanf(sim_file,"%x %c",&addr,&rw) == 2
+        #ifdef SUBSET
+        && (count<SUBSET)
+        #endif
+    ){ 
         if(rw == 'W'){
             vm_write(addr);
         }

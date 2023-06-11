@@ -6,7 +6,6 @@
 
 /* --------------------------------------- Macros ----------------------------------------------------------- */
 #define MAX_TIMESTAMP 0x1FFFFFFF
-#define PRINT_DEBUG
 #define PAGE_INDEX(addr) (addr >> mem_info.offset_bits)
 #define GET_OFFSET(addr) (addr & (~(~1<<mem_info.offset_bits)))
 
@@ -41,7 +40,8 @@ static memory_info_t mem_info;
 static page_table_info_t * page_table;
 static int (*get_victim)();
 static int fifo_first_in_index = 0;
-static int time = 0;
+static unsigned time = 1;
+static bool debug_logs;
 
 /* --------------------------------------- Local Function Declaration --------------------------------------------- */
 static int calc_offset_bits(int page_size);
@@ -56,7 +56,7 @@ static void swap_in(int disk_page_index, int phy_page_index);
 static void swap_out(int disk_page_index, int phy_page_index);
 
 /* --------------------------------------- External Function Implementation ---------------------------------- */
-void vm_init(int subs_alg_type, int total_memory_size, int page_size){
+void vm_init(int subs_alg_type, int total_memory_size, int page_size, bool debug){
 
     mem_info.subs_alg_type = subs_alg_type;
     switch (subs_alg_type)
@@ -83,16 +83,17 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size){
     mem_info.phy_mem_num_of_pages = mem_info.phy_mem_size / mem_info.page_size;
     mem_info.phy_mem_filled_pages = 0;
 
-    #ifdef PRINT_DEBUG
-    printf("Mem info:\n\tAlg: %d\n\tPage_size: %d\n\tOffset Bits: %d\n\tPage table size: %d\n\tPhy_mem_size: %d\n\tPhy_mem_num_of_pages: %d\n", 
-        mem_info.subs_alg_type,
-        mem_info.page_size,
-        mem_info.offset_bits,
-        mem_info.page_table_size,
-        mem_info.phy_mem_size,
-        mem_info.phy_mem_num_of_pages
-    );
-    #endif
+    debug_logs = debug;
+
+    if (debug_logs)
+        printf("Mem info:\n\tAlg: %d\n\tPage_size: %d\n\tOffset Bits: %d\n\tPage table size: %d\n\tPhy_mem_size: %d\n\tPhy_mem_num_of_pages: %d\n", 
+            mem_info.subs_alg_type,
+            mem_info.page_size,
+            mem_info.offset_bits,
+            mem_info.page_table_size,
+            mem_info.phy_mem_size,
+            mem_info.phy_mem_num_of_pages
+        );
 
     page_table = (page_table_info_t *) malloc(mem_info.page_table_size * sizeof(page_table_info_t));
     memset(page_table, 0, (mem_info.page_table_size * sizeof(page_table_info_t)));
@@ -100,13 +101,12 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size){
     return;
 }
 
-void vm_write(int addr){
+void vm_write(unsigned addr){
+    unsigned page_index = PAGE_INDEX(addr);
 
-    #ifdef PRINT_DEBUG
-    printf("Req to write on page %d\n", PAGE_INDEX(addr));
-    #endif
+    if (debug_logs)
+        printf("[%u] Req to write to address %8x, on page %d\n", time, addr, page_index);
 
-    int page_index = PAGE_INDEX(addr);
     if(page_table[page_index].validity==0){
         page_fault(page_index);
         vm_write(addr);
@@ -115,9 +115,8 @@ void vm_write(int addr){
         /* Write at addres page_table[page_index].phy_page + offset bits */
         // int phy_addr = (page_table[page_index].phy_page << mem_info.offset_bits) | GET_OFFSET(addr);
         
-        #ifdef PRINT_DEBUG
-        printf("\tNo page fault, write to phy page %d\n\n", page_table[page_index].phy_page);
-        #endif
+        if (debug_logs)
+            printf("\tNo page fault, write to phy page %d\n\n", page_table[page_index].phy_page);
 
         page_table[page_index].ref_bit = 1;
         page_table[page_index].dirty = 1;
@@ -128,13 +127,12 @@ void vm_write(int addr){
     return;
 }
 
-void vm_read(int addr){
+void vm_read(unsigned addr){
+    unsigned page_index = PAGE_INDEX(addr);
 
-    #ifdef PRINT_DEBUG
-    printf("Req to read from page %d\n", PAGE_INDEX(addr));
-    #endif
+    if (debug_logs)
+        printf("[%u] Req to read from address %8x, on page %d\n", time, addr, page_index);
 
-    int page_index = PAGE_INDEX(addr);
     if(page_table[page_index].validity==0){
         page_fault(page_index);
         vm_read(addr);
@@ -143,9 +141,8 @@ void vm_read(int addr){
         /* Read from addres page_table[page_index].phy_page + offset bits */
         // int phy_addr = (page_table[page_index].phy_page << mem_info.offset_bits) | GET_OFFSET(addr);
         
-        #ifdef PRINT_DEBUG
-        printf("\tNo page fault, read from phy page %d\n\n", page_table[page_index].phy_page);
-        #endif
+        if (debug_logs)
+            printf("\tNo page fault, read from phy page %d\n\n", page_table[page_index].phy_page);
 
         page_table[page_index].ref_bit = 1;
         page_table[page_index].timestamp = time++;
@@ -157,9 +154,8 @@ void vm_read(int addr){
 
 void vm_print_report(){
 
-    #ifdef PRINT_DEBUG
-    printf("Printing report...\n");
-    #endif
+    if (debug_logs)
+        printf("Printing report...\n");
 
     int mem_size = mem_info.phy_mem_size/1024;
     int page_size = mem_info.page_size/1024;
@@ -207,9 +203,8 @@ static void page_fault(int page_index){
     mem_info.page_faults++;
 
     if(mem_info.phy_mem_filled_pages < mem_info.phy_mem_num_of_pages){
-        #ifdef PRINT_DEBUG
-        printf("\tFree page available at %d. Assigning to %d\n", mem_info.phy_mem_filled_pages, page_index);
-        #endif
+        if (debug_logs)
+            printf("\tFree page available at %d. Assigning to %d\n", mem_info.phy_mem_filled_pages, page_index);
 
         swap_in(page_index, mem_info.phy_mem_filled_pages);
         page_table[page_index].phy_page = mem_info.phy_mem_filled_pages;
@@ -219,9 +214,8 @@ static void page_fault(int page_index){
     else{
         int victim_index = (*get_victim)();
 
-        #ifdef PRINT_DEBUG
-        printf("\tVictim %d. Originally from %d, now %d\n", page_table[victim_index].phy_page, victim_index, page_index);
-        #endif
+        if (debug_logs)
+            printf("\tVictim %d. Originally from %d, now %d\n", page_table[victim_index].phy_page, victim_index, page_index);
         
         swap_out(victim_index, page_table[victim_index].phy_page);
         swap_in(page_index, page_table[victim_index].phy_page);
