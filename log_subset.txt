@@ -1,0 +1,290 @@
+Iniciando suíte de testes
+
+---------------------------------------------------------------------------------------
+PARTE 1 - PÁGINAS DE 4KB, TAMANHO DE MEMÓRIA VARIÁVEL
+---------------------------------------------------------------------------------------
+
+Memória = 128 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             117 |              37 |          0.058s
+ compressor.log |          random |              22 |               0 |          0.046s
+     matriz.log |          random |              28 |               0 |          0.046s
+  simulador.log |          random |             107 |              33 |          0.051s
+ compilador.log |            fifo |             110 |              33 |          0.055s
+ compressor.log |            fifo |              22 |               0 |          0.046s
+     matriz.log |            fifo |              28 |               0 |          0.049s
+  simulador.log |            fifo |             105 |              36 |          0.055s
+ compilador.log |              2a |             109 |              33 |          0.078s
+ compressor.log |              2a |              22 |               0 |          0.046s
+     matriz.log |              2a |              28 |               0 |          0.046s
+  simulador.log |              2a |             104 |              37 |          0.073s
+ compilador.log |             lru |             109 |              33 |          0.046s
+ compressor.log |             lru |              22 |               0 |          0.046s
+     matriz.log |             lru |              28 |               0 |          0.047s
+  simulador.log |             lru |             104 |              35 |          0.048s
+
+Memória = 256 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             104 |              22 |          0.050s
+ compressor.log |          random |              22 |               0 |          0.045s
+     matriz.log |          random |              28 |               0 |          0.047s
+  simulador.log |          random |              95 |              13 |          0.048s
+ compilador.log |            fifo |             102 |              14 |          0.048s
+ compressor.log |            fifo |              22 |               0 |          0.046s
+     matriz.log |            fifo |              28 |               0 |          0.046s
+  simulador.log |            fifo |              95 |              17 |          0.048s
+ compilador.log |              2a |             102 |              13 |          0.065s
+ compressor.log |              2a |              22 |               0 |          0.045s
+     matriz.log |              2a |              28 |               0 |          0.046s
+  simulador.log |              2a |              96 |              16 |          0.067s
+ compilador.log |             lru |             101 |              13 |          0.048s
+ compressor.log |             lru |              22 |               0 |          0.049s
+     matriz.log |             lru |              28 |               0 |          0.051s
+  simulador.log |             lru |              94 |              15 |          0.051s
+
+Memória = 512 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.047s
+ compressor.log |          random |              22 |               0 |          0.046s
+     matriz.log |          random |              28 |               0 |          0.046s
+  simulador.log |          random |              92 |               0 |          0.046s
+ compilador.log |            fifo |              98 |               0 |          0.047s
+ compressor.log |            fifo |              22 |               0 |          0.048s
+     matriz.log |            fifo |              28 |               0 |          0.048s
+  simulador.log |            fifo |              92 |               0 |          0.046s
+ compilador.log |              2a |              98 |               0 |          0.047s
+ compressor.log |              2a |              22 |               0 |          0.050s
+     matriz.log |              2a |              28 |               0 |          0.050s
+  simulador.log |              2a |              92 |               0 |          0.051s
+ compilador.log |             lru |              98 |               0 |          0.050s
+ compressor.log |             lru |              22 |               0 |          0.050s
+     matriz.log |             lru |              28 |               0 |          0.051s
+  simulador.log |             lru |              92 |               0 |          0.047s
+
+Memória = 1024 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.047s
+ compressor.log |          random |              22 |               0 |          0.046s
+     matriz.log |          random |              28 |               0 |          0.056s
+  simulador.log |          random |              92 |               0 |          0.046s
+ compilador.log |            fifo |              98 |               0 |          0.046s
+ compressor.log |            fifo |              22 |               0 |          0.047s
+     matriz.log |            fifo |              28 |               0 |          0.046s
+  simulador.log |            fifo |              92 |               0 |          0.046s
+ compilador.log |              2a |              98 |               0 |          0.046s
+ compressor.log |              2a |              22 |               0 |          0.048s
+     matriz.log |              2a |              28 |               0 |          0.049s
+  simulador.log |              2a |              92 |               0 |          0.050s
+ compilador.log |             lru |              98 |               0 |          0.049s
+ compressor.log |             lru |              22 |               0 |          0.050s
+     matriz.log |             lru |              28 |               0 |          0.047s
+  simulador.log |             lru |              92 |               0 |          0.046s
+
+Memória = 2048 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.046s
+ compressor.log |          random |              22 |               0 |          0.046s
+     matriz.log |          random |              28 |               0 |          0.046s
+  simulador.log |          random |              92 |               0 |          0.045s
+ compilador.log |            fifo |              98 |               0 |          0.047s
+ compressor.log |            fifo |              22 |               0 |          0.046s
+     matriz.log |            fifo |              28 |               0 |          0.046s
+  simulador.log |            fifo |              92 |               0 |          0.047s
+ compilador.log |              2a |              98 |               0 |          0.048s
+ compressor.log |              2a |              22 |               0 |          0.049s
+     matriz.log |              2a |              28 |               0 |          0.049s
+  simulador.log |              2a |              92 |               0 |          0.049s
+ compilador.log |             lru |              98 |               0 |          0.050s
+ compressor.log |             lru |              22 |               0 |          0.050s
+     matriz.log |             lru |              28 |               0 |          0.047s
+  simulador.log |             lru |              92 |               0 |          0.046s
+
+Memória = 4096 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.047s
+ compressor.log |          random |              22 |               0 |          0.048s
+     matriz.log |          random |              28 |               0 |          0.048s
+  simulador.log |          random |              92 |               0 |          0.047s
+ compilador.log |            fifo |              98 |               0 |          0.049s
+ compressor.log |            fifo |              22 |               0 |          0.047s
+     matriz.log |            fifo |              28 |               0 |          0.049s
+  simulador.log |            fifo |              92 |               0 |          0.047s
+ compilador.log |              2a |              98 |               0 |          0.049s
+ compressor.log |              2a |              22 |               0 |          0.049s
+     matriz.log |              2a |              28 |               0 |          0.056s
+  simulador.log |              2a |              92 |               0 |          0.071s
+ compilador.log |             lru |              98 |               0 |          0.054s
+ compressor.log |             lru |              22 |               0 |          0.051s
+     matriz.log |             lru |              28 |               0 |          0.065s
+  simulador.log |             lru |              92 |               0 |          0.047s
+
+Memória = 8192 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.049s
+ compressor.log |          random |              22 |               0 |          0.047s
+     matriz.log |          random |              28 |               0 |          0.048s
+  simulador.log |          random |              92 |               0 |          0.047s
+ compilador.log |            fifo |              98 |               0 |          0.047s
+ compressor.log |            fifo |              22 |               0 |          0.047s
+     matriz.log |            fifo |              28 |               0 |          0.048s
+  simulador.log |            fifo |              92 |               0 |          0.046s
+ compilador.log |              2a |              98 |               0 |          0.049s
+ compressor.log |              2a |              22 |               0 |          0.048s
+     matriz.log |              2a |              28 |               0 |          0.051s
+  simulador.log |              2a |              92 |               0 |          0.048s
+ compilador.log |             lru |              98 |               0 |          0.048s
+ compressor.log |             lru |              22 |               0 |          0.047s
+     matriz.log |             lru |              28 |               0 |          0.048s
+  simulador.log |             lru |              92 |               0 |          0.046s
+
+Memória = 16384 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |              98 |               0 |          0.046s
+ compressor.log |          random |              22 |               0 |          0.047s
+     matriz.log |          random |              28 |               0 |          0.047s
+  simulador.log |          random |              92 |               0 |          0.047s
+ compilador.log |            fifo |              98 |               0 |          0.046s
+ compressor.log |            fifo |              22 |               0 |          0.047s
+     matriz.log |            fifo |              28 |               0 |          0.048s
+  simulador.log |            fifo |              92 |               0 |          0.050s
+ compilador.log |              2a |              98 |               0 |          0.049s
+ compressor.log |              2a |              22 |               0 |          0.051s
+     matriz.log |              2a |              28 |               0 |          0.050s
+  simulador.log |              2a |              92 |               0 |          0.047s
+ compilador.log |             lru |              98 |               0 |          0.046s
+ compressor.log |             lru |              22 |               0 |          0.046s
+     matriz.log |             lru |              28 |               0 |          0.047s
+  simulador.log |             lru |              92 |               0 |          0.046s
+
+---------------------------------------------------------------------------------------
+PARTE 2 - PÁGINAS DE TAMANHO VARIÁVEL, TAMANHO DE MEMÓRIA FIXO EM 256KB
+---------------------------------------------------------------------------------------
+
+Tamanho de página = 2 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             107 |               0 |          0.067s
+ compressor.log |          random |              26 |               0 |          0.069s
+     matriz.log |          random |              31 |               0 |          0.069s
+  simulador.log |          random |             109 |               0 |          0.071s
+ compilador.log |            fifo |             107 |               0 |          0.073s
+ compressor.log |            fifo |              26 |               0 |          0.074s
+     matriz.log |            fifo |              31 |               0 |          0.075s
+  simulador.log |            fifo |             109 |               0 |          0.070s
+ compilador.log |              2a |             107 |               0 |          0.068s
+ compressor.log |              2a |              26 |               0 |          0.066s
+     matriz.log |              2a |              31 |               0 |          0.068s
+  simulador.log |              2a |             109 |               0 |          0.067s
+ compilador.log |             lru |             107 |               0 |          0.069s
+ compressor.log |             lru |              26 |               0 |          0.070s
+     matriz.log |             lru |              31 |               0 |          0.073s
+  simulador.log |             lru |             109 |               0 |          0.074s
+
+Tamanho de página = 4 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             104 |              22 |          0.054s
+ compressor.log |          random |              22 |               0 |          0.053s
+     matriz.log |          random |              28 |               0 |          0.056s
+  simulador.log |          random |              95 |              13 |          0.051s
+ compilador.log |            fifo |             102 |              14 |          0.050s
+ compressor.log |            fifo |              22 |               0 |          0.048s
+     matriz.log |            fifo |              28 |               0 |          0.048s
+  simulador.log |            fifo |              95 |              17 |          0.050s
+ compilador.log |              2a |             102 |              13 |          0.070s
+ compressor.log |              2a |              22 |               0 |          0.048s
+     matriz.log |              2a |              28 |               0 |          0.047s
+  simulador.log |              2a |              96 |              16 |          0.067s
+ compilador.log |             lru |             101 |              13 |          0.047s
+ compressor.log |             lru |              22 |               0 |          0.046s
+     matriz.log |             lru |              28 |               0 |          0.047s
+  simulador.log |             lru |              94 |              15 |          0.047s
+
+Tamanho de página = 8 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             106 |              30 |          0.040s
+ compressor.log |          random |              20 |               0 |          0.038s
+     matriz.log |          random |              28 |               0 |          0.038s
+  simulador.log |          random |             101 |              32 |          0.039s
+ compilador.log |            fifo |             107 |              33 |          0.041s
+ compressor.log |            fifo |              20 |               0 |          0.037s
+     matriz.log |            fifo |              28 |               0 |          0.038s
+  simulador.log |            fifo |             101 |              35 |          0.039s
+ compilador.log |              2a |             106 |              33 |          0.052s
+ compressor.log |              2a |              20 |               0 |          0.037s
+     matriz.log |              2a |              28 |               0 |          0.039s
+  simulador.log |              2a |             100 |              37 |          0.050s
+ compilador.log |             lru |             105 |              32 |          0.036s
+ compressor.log |             lru |              20 |               0 |          0.037s
+     matriz.log |             lru |              28 |               0 |          0.035s
+  simulador.log |             lru |             100 |              35 |          0.037s
+
+Tamanho de página = 16 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             110 |              39 |          0.033s
+ compressor.log |          random |              22 |               1 |          0.032s
+     matriz.log |          random |              42 |               4 |          0.033s
+  simulador.log |          random |             112 |              50 |          0.036s
+ compilador.log |            fifo |             111 |              42 |          0.033s
+ compressor.log |            fifo |              19 |               0 |          0.031s
+     matriz.log |            fifo |              54 |              10 |          0.032s
+  simulador.log |            fifo |             109 |              49 |          0.033s
+ compilador.log |              2a |             106 |              44 |          0.039s
+ compressor.log |              2a |              19 |               0 |          0.031s
+     matriz.log |              2a |              44 |              10 |          0.037s
+  simulador.log |              2a |             106 |              52 |          0.040s
+ compilador.log |             lru |             108 |              43 |          0.032s
+ compressor.log |             lru |              19 |               0 |          0.032s
+     matriz.log |             lru |              43 |               8 |          0.031s
+  simulador.log |             lru |             107 |              51 |          0.031s
+
+Tamanho de página = 32 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             128 |              52 |          0.030s
+ compressor.log |          random |              19 |               2 |          0.029s
+     matriz.log |          random |              67 |              13 |          0.029s
+  simulador.log |          random |             126 |              59 |          0.029s
+ compilador.log |            fifo |             119 |              49 |          0.030s
+ compressor.log |            fifo |              19 |               2 |          0.029s
+     matriz.log |            fifo |              73 |              12 |          0.030s
+  simulador.log |            fifo |             119 |              59 |          0.030s
+ compilador.log |              2a |             115 |              50 |          0.035s
+ compressor.log |              2a |              18 |               2 |          0.028s
+     matriz.log |              2a |              63 |              12 |          0.033s
+  simulador.log |              2a |             115 |              59 |          0.033s
+ compilador.log |             lru |             116 |              50 |          0.028s
+ compressor.log |             lru |              18 |               2 |          0.028s
+     matriz.log |             lru |              63 |              12 |          0.028s
+  simulador.log |             lru |             114 |              59 |          0.028s
+
+Tamanho de página = 64 KB
+        Arquivo |       Algoritmo |     Page faults |     Dirty pages |           Tempo
+---------------------------------------------------------------------------------------
+ compilador.log |          random |             130 |              52 |          0.027s
+ compressor.log |          random |              27 |               6 |          0.027s
+     matriz.log |          random |              74 |              12 |          0.028s
+  simulador.log |          random |             125 |              60 |          0.028s
+ compilador.log |            fifo |             129 |              53 |          0.027s
+ compressor.log |            fifo |              23 |               3 |          0.027s
+     matriz.log |            fifo |              75 |              13 |          0.027s
+  simulador.log |            fifo |             123 |              62 |          0.028s
+ compilador.log |              2a |             123 |              53 |          0.030s
+ compressor.log |              2a |              20 |               5 |          0.027s
+     matriz.log |              2a |              63 |              13 |          0.030s
+  simulador.log |              2a |             115 |              62 |          0.030s
+ compilador.log |             lru |             123 |              53 |          0.028s
+ compressor.log |             lru |              21 |               4 |          0.028s
+     matriz.log |             lru |              61 |              13 |          0.028s
+  simulador.log |             lru |             119 |              61 |          0.027s
+
