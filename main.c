@@ -4,7 +4,7 @@
 
 #include "virtual_memory.h"
 
-#define SUBSET 200
+// #define SUBSET 200
 
 int get_subs_alg_type(char * arg){
 
