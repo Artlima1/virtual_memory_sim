@@ -5,11 +5,11 @@
 #include <stdlib.h>
 
 /* --------------------------------------- Macros ----------------------------------------------------------- */
-#define MAX_TIMESTAMP 0x1FFFFFFF
 #define PAGE_INDEX(addr) (addr >> mem_info.offset_bits)
 #define GET_OFFSET(addr) (addr & (~(~1<<mem_info.offset_bits)))
 
 /* --------------------------------------- Type Definitions ------------------------------------------------- */
+typedef struct lru_node_t lru_node_t;
 typedef struct {
     int subs_alg_type;
 
@@ -32,8 +32,13 @@ typedef struct {
     unsigned int validity : 1;
     unsigned int dirty : 1;
     unsigned int ref_bit : 1;
-    unsigned int timestamp : 29;
 } page_table_info_t;
+
+struct lru_node_t{
+    unsigned page_index;
+    lru_node_t *next;
+    lru_node_t *prev;
+};
 
 /* --------------------------------------- Local Variables -------------------------------------------------- */
 static memory_info_t mem_info;
@@ -41,17 +46,23 @@ static page_table_info_t * page_table;
 static int (*get_victim)();
 static int fifo_first_in_index = 0;
 static unsigned time = 1;
+static bool list_is_full = false;
 static bool debug_logs;
+static lru_node_t *lru_pages;
+static lru_node_t *lru_head = NULL;
+static lru_node_t *lru_tail = NULL;
 
 /* --------------------------------------- Local Function Declaration --------------------------------------------- */
 static int calc_offset_bits(int page_size);
 static void page_fault(int page_index);
 
+static void print_lru_list();
 static int lru_subs_alg();
 static int second_chance_subs_alg();
 static int fifo_subs_alg();
 static int random_subs_alg();
 
+static void swap_node_to_head(lru_node_t *node);
 static void swap_in(int disk_page_index, int phy_page_index);
 static void swap_out(int disk_page_index, int phy_page_index);
 
@@ -98,6 +109,11 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size, bool debug
     page_table = (page_table_info_t *) malloc(mem_info.page_table_size * sizeof(page_table_info_t));
     memset(page_table, 0, (mem_info.page_table_size * sizeof(page_table_info_t)));
 
+    if(subs_alg_type == SUBS_ALG_LRU){
+        lru_pages = (lru_node_t *) malloc(mem_info.phy_mem_num_of_pages * sizeof(lru_node_t));
+        memset(lru_pages, 0, (mem_info.phy_mem_num_of_pages * sizeof(lru_node_t)));
+    }
+
     return;
 }
 
@@ -120,10 +136,14 @@ void vm_write(unsigned addr){
 
         page_table[page_index].ref_bit = 1;
         page_table[page_index].dirty = 1;
-        page_table[page_index].timestamp = time++;
         mem_info.tot_mem_reqs++;
-    }
 
+        if (mem_info.subs_alg_type == SUBS_ALG_LRU) {
+            lru_node_t *node = &lru_pages[page_table[page_index].phy_page];
+            node->page_index = page_index; 
+            swap_node_to_head(node);
+        }
+    }
     return;
 }
 
@@ -145,8 +165,13 @@ void vm_read(unsigned addr){
             printf("\tNo page fault, read from phy page %d\n\n", page_table[page_index].phy_page);
 
         page_table[page_index].ref_bit = 1;
-        page_table[page_index].timestamp = time++;
         mem_info.tot_mem_reqs++;
+
+        if (mem_info.subs_alg_type == SUBS_ALG_LRU) {
+            lru_node_t *node = &lru_pages[page_table[page_index].phy_page];
+            node->page_index = page_index; 
+            swap_node_to_head(node);
+        }
     }
 
     return;
@@ -199,7 +224,7 @@ static int calc_offset_bits(int page_size){
 }
 
 static void page_fault(int page_index){
-
+    
     mem_info.page_faults++;
 
     if(mem_info.phy_mem_filled_pages < mem_info.phy_mem_num_of_pages){
@@ -231,23 +256,11 @@ static void page_fault(int page_index){
         page_table[victim_index].validity = 0;
         page_table[victim_index].ref_bit = 0;
         page_table[victim_index].dirty = 0;
-        page_table[victim_index].timestamp = 0;
-
     }
 }
 
 static int lru_subs_alg(){
-    unsigned int oldest_timestamp = MAX_TIMESTAMP;
-    int table_index;
-
-    for(int i=0; i<mem_info.page_table_size; i++){
-        if(page_table[i].validity==1 && page_table[i].timestamp < oldest_timestamp){
-            oldest_timestamp = page_table[i].timestamp;
-            table_index = i;
-        }
-    }
-
-    return table_index;
+    return lru_tail->page_index;
 }
 
 static int second_chance_subs_alg(){
@@ -305,6 +318,37 @@ static int random_subs_alg(){
     return table_index;
 }
 
+static void print_lru_list() {
+    lru_node_t *aux = lru_head;
+    while(aux != NULL){
+        printf("%d ", page_table[aux->page_index].phy_page);
+        aux = aux->next;
+    }
+    printf("\n");
+}
+
+static void swap_node_to_head(lru_node_t *node) {
+    if (mem_info.phy_mem_filled_pages == 1) {
+        lru_head = node;
+        lru_tail = node;
+    }
+    if (node == lru_head) {
+        return;
+    }
+    if (node == lru_tail) {
+        lru_tail = node->prev;
+        lru_tail->next = NULL;
+    } else {
+        if (node->prev != NULL)
+            node->prev->next = node->next;
+        if (node->next != NULL)
+            node->next->prev = node->prev;
+    }
+    node->next = lru_head;
+    node->prev = NULL;
+    lru_head->prev = node;
+    lru_head = node;
+}
 
 static void swap_in(int disk_page_index, int phy_page_index){
     return;
