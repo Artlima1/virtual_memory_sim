@@ -97,7 +97,7 @@ void vm_init(int subs_alg_type, int total_memory_size, int page_size, bool debug
     debug_logs = debug;
 
     if (debug_logs)
-        printf("Mem info:\n\tAlg: %d\n\tPage_size: %d\n\tOffset Bits: %d\n\tPage table size: %d\n\tPhy_mem_size: %d\n\tPhy_mem_num_of_pages: %d\n", 
+            printf("Mem info:\n\tAlg: %d\n\tPage_size: %d\n\tOffset Bits: %d\n\tPage table size: %d\n\tPhy_mem_size: %d\n\tPhy_mem_num_of_pages: %d\n\n", 
             mem_info.subs_alg_type,
             mem_info.page_size,
             mem_info.offset_bits,
@@ -137,6 +137,7 @@ void vm_write(unsigned addr){
         page_table[page_index].ref_bit = 1;
         page_table[page_index].dirty = 1;
         mem_info.tot_mem_reqs++;
+        time++;
 
         if (mem_info.subs_alg_type == SUBS_ALG_LRU) {
             lru_node_t *node = &lru_pages[page_table[page_index].phy_page];
@@ -166,6 +167,7 @@ void vm_read(unsigned addr){
 
         page_table[page_index].ref_bit = 1;
         mem_info.tot_mem_reqs++;
+        time++;
 
         if (mem_info.subs_alg_type == SUBS_ALG_LRU) {
             lru_node_t *node = &lru_pages[page_table[page_index].phy_page];

@@ -28,7 +28,7 @@ int get_subs_alg_type(char * arg){
 int main(int argc, char **argv){
 
     if (argc < 5 || argc > 6) {
-        printf("Uso: %s <algoritmo> <arquivo de entrada> <tamanho da memória> <tamanho da página> [debug]\n", argv[0]);
+        printf("Uso: %s <algoritmo> <arquivo de entrada> <tamanho da página> <tamanho da memória> [debug]\n", argv[0]);
         printf("Algoritmos disponíveis: lru, 2a, fifo, random\n");
         exit(1);
     }
